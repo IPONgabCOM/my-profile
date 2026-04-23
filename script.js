@@ -1,84 +1,150 @@
-const DISCORD_ID = "826362723792977950"; 
+const DISCORD_ID = "826362723792977950";
 
-// Safety: Disable Inspect Element keys
-function disableInspect(e) {
-    if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
-        return false;
+const el = (id) => document.getElementById(id);
+
+// Cache DOM (faster)
+const DOM = {
+    avatar: el('discord-avatar'),
+    cardAvatar: el('card-avatar'),
+    favicon: el('dynamic-favicon'),
+    decoration: el('discord-decoration'),
+    noteSection: el('note-section'),
+    noteText: el('discord-note'),
+    displayName: el('display-name'),
+    cardName: el('card-name'),
+    username: el('card-username'),
+    statusDot: el('status-dot'),
+    statusSmall: el('card-status-dot-small'),
+    discordLink: el('discord-link'),
+    views: el('view-count'),
+    music: el('bg-music'),
+    overlay: el('overlay')
+};
+
+let lastStatus = "";
+let lastNote = "";
+let retryDelay = 5000;
+
+// 🔒 Anti-inspect (cleaner)
+document.addEventListener("keydown", (e) => {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key)) ||
+        (e.ctrlKey && e.key === "U")
+    ) {
+        e.preventDefault();
+    }
+});
+
+// 🎧 Smooth music fade-in
+function playMusic() {
+    const audio = DOM.music;
+    audio.volume = 0;
+    audio.play().catch(() => {});
+
+    let vol = 0;
+    const fade = setInterval(() => {
+        vol += 0.02;
+        if (vol >= 0.2) {
+            audio.volume = 0.2;
+            clearInterval(fade);
+        } else {
+            audio.volume = vol;
+        }
+    }, 100);
+}
+
+// 🌐 Lanyard fetch
+async function updateLanyard() {
+    try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const json = await res.json();
+
+        if (!json.success) throw new Error("API failed");
+
+        const data = json.data;
+        const user = data.discord_user;
+
+        // 🖼 Avatar
+        const base = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}`;
+        const avatar = user.avatar.startsWith("a_") ? `${base}.gif` : `${base}.png`;
+
+        if (DOM.avatar.src !== avatar) {
+            DOM.avatar.src = avatar;
+            DOM.cardAvatar.src = avatar;
+            DOM.favicon.href = avatar;
+        }
+
+        // ✨ Decoration
+        if (user.avatar_decoration_data) {
+            const asset = user.avatar_decoration_data.asset;
+            const decoURL = `https://cdn.discordapp.com/avatar-decorations/${asset}.png?v=${Date.now()}`;
+
+            if (DOM.decoration.src !== decoURL) {
+                DOM.decoration.src = decoURL;
+            }
+
+            DOM.decoration.style.display = "block";
+        } else {
+            DOM.decoration.style.display = "none";
+        }
+
+        // 📝 Custom status
+        const custom = data.activities.find(a => a.type === 4);
+
+        if (custom && custom.state) {
+            if (lastNote !== custom.state) {
+                DOM.noteText.innerText = custom.state;
+                lastNote = custom.state;
+            }
+            DOM.noteSection.style.display = "block";
+        } else {
+            DOM.noteSection.style.display = "none";
+        }
+
+        // 👤 Name
+        const name = user.global_name || user.username;
+        DOM.displayName.innerText = name;
+        DOM.cardName.innerText = name;
+        DOM.username.innerText = `@${user.username}`;
+        DOM.discordLink.href = `https://discord.com/users/${DISCORD_ID}`;
+
+        // 🟢 Status
+        if (lastStatus !== data.discord_status) {
+            lastStatus = data.discord_status;
+            DOM.statusDot.className = `status-dot ${lastStatus}`;
+            DOM.statusSmall.className = `status-dot-small ${lastStatus}`;
+        }
+
+        retryDelay = 5000; // reset retry
+
+    } catch (err) {
+        console.log("Lanyard retrying...");
+        setTimeout(updateLanyard, retryDelay);
+        retryDelay = Math.min(retryDelay * 2, 30000); // exponential backoff
     }
 }
 
-async function updateLanyard() {
-    try {
-        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-        const { data, success } = await response.json();
-
-        if (success) {
-            const user = data.discord_user;
-
-            // 1. Avatar Update
-            const avatarBase = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}`;
-            const avatarUrl = user.avatar.startsWith("a_") ? `${avatarBase}.gif` : `${avatarBase}.png`;
-            
-            // Apply avatar to main card, hover card, AND DYNAMIC FAVICON
-            document.getElementById('discord-avatar').src = avatarUrl;
-            document.getElementById('card-avatar').src = avatarUrl;
-            document.getElementById('dynamic-favicon').href = avatarUrl; // Sets Tab Icon
-
-            // 2. FIXED: Decoration Logic (forces refresh)
-            const decoEl = document.getElementById('discord-decoration');
-            if (user.avatar_decoration_data) {
-                const asset = user.avatar_decoration_data.asset;
-                // Add ?v= timestamp to prevent browser from caching a broken version
-                decoEl.src = `https://cdn.discordapp.com/avatar-decorations/${asset}.png?v=${Date.now()}`;
-                decoEl.style.display = "block";
-            } else {
-                decoEl.style.display = "none";
-            }
-
-            // 3. Note Section Logic (smoother, only updates if text changed)
-            const customStatus = data.activities.find(a => a.type === 4);
-            const noteSection = document.getElementById('note-section');
-            const noteText = document.getElementById('discord-note');
-
-            if (customStatus && customStatus.state) {
-                if (noteText.innerText !== customStatus.state) {
-                    noteText.innerText = customStatus.state;
-                }
-                noteSection.style.display = "block";
-            } else {
-                noteSection.style.display = "none";
-            }
-
-            // 4. Names & Presence
-            const name = user.global_name || user.username;
-            document.getElementById('display-name').innerText = name;
-            document.getElementById('card-name').innerText = name;
-            document.getElementById('card-username').innerText = `@${user.username}`;
-            document.getElementById('discord-link').href = `https://discord.com/users/${DISCORD_ID}`;
-
-            const status = data.discord_status;
-            document.getElementById('status-dot').className = `status-dot ${status}`;
-            document.getElementById('card-status-dot-small').className = `status-dot-small ${status}`;
-        }
-    } catch (e) { console.error("Lanyard Error:", e); }
-}
-
+// 👁️ Views
 async function handleViews() {
     try {
-        const res = await fetch(`https://api.counterapi.dev/v1/dre_bio_final_${DISCORD_ID}/update/visits`);
+        const res = await fetch(`https://api.counterapi.dev/v1/dre_${DISCORD_ID}/visits`);
         const data = await res.json();
-        document.getElementById('view-count').innerText = data.value.toLocaleString();
-    } catch (e) { console.log("Counter offline"); }
+
+        DOM.views.innerText = Number(data.value || 0).toLocaleString();
+    } catch {
+        DOM.views.innerText = "—";
+    }
 }
 
+// 🚪 Enter site
 function enterSite() {
-    document.getElementById('overlay').classList.add('hidden');
+    DOM.overlay.classList.add("hidden");
     document.querySelector('.background-container').style.transform = "scale(1.1)";
-    const music = document.getElementById('bg-music');
-    music.volume = 0.2;
-    music.play();
-    
+
+    playMusic();
     updateLanyard();
     handleViews();
-    setInterval(updateLanyard, 10000); // Check every 10 seconds
+
+    setInterval(updateLanyard, 15000); // less spam, smoother
 }
