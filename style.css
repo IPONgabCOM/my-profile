@@ -1,4 +1,4 @@
-/* General Reset & Performance */
+/* RESET */
 * { 
     margin: 0; 
     padding: 0; 
@@ -16,13 +16,10 @@ body {
     color: #fff; 
 }
 
-/* Background - Slightly Lighter and Smooth */
+/* BACKGROUND */
 .background-container { 
     position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
+    inset: 0;
     z-index: 1; 
     will-change: transform; 
     transition: transform 3s cubic-bezier(0.2, 0, 0.2, 1); 
@@ -32,24 +29,21 @@ body {
     width: 100%; 
     height: 100%; 
     object-fit: cover; 
-    /* Brightness increased to 28% for better visibility */
-    filter: grayscale(100%) brightness(28%); 
+    filter: grayscale(100%) brightness(35%) contrast(110%);
+    transform: scale(1.05);
 }
 
-/* Click Overlay */
+/* OVERLAY */
 #overlay { 
     position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
+    inset: 0;
     background: rgba(0, 0, 0, 0.98); 
     backdrop-filter: blur(30px); 
     display: flex; 
     justify-content: center; 
     align-items: center; 
     z-index: 9999; 
-    transition: opacity 1.5s ease, visibility 1.5s; 
+    transition: opacity 1s ease, visibility 1s; 
 }
 
 #overlay.hidden { 
@@ -63,10 +57,10 @@ body {
     letter-spacing: 10px; 
     animation: breathe 3s infinite; 
     text-transform: uppercase; 
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
 }
 
-/* Main Content Layout */
+/* MAIN */
 .main-content { 
     display: flex; 
     justify-content: center; 
@@ -74,27 +68,28 @@ body {
     height: 100vh; 
     position: relative;
     z-index: 10;
+    padding: 20px;
 }
 
-/* Main Profile Card */
+/* CARD */
 .profile-card { 
-    background: rgba(255, 255, 255, 0.01); 
+    background: rgba(255, 255, 255, 0.03); 
     backdrop-filter: blur(20px); 
-    border: 1px solid rgba(255, 255, 255, 0.03); 
-    padding: 50px; 
+    border: 1px solid rgba(255, 255, 255, 0.05); 
+    padding: 45px; 
     border-radius: 25px; 
     width: 380px; 
     text-align: center; 
-    box-shadow: 0 0 40px rgba(0,0,0,0.4);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 50px rgba(0,0,0,0.6);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
 }
 
 .profile-card:hover { 
-    transform: scale(1.02); 
+    transform: translateY(-5px) scale(1.02); 
 }
 
-/* Avatar Container - The Hover Trigger */
+/* AVATAR */
 .avatar-container { 
     position: relative; 
     width: 130px; 
@@ -110,10 +105,16 @@ body {
     height: 90px; 
     border-radius: 50%; 
     z-index: 2; 
-    position: relative;
     object-fit: cover;
+    transition: 0.3s;
 }
 
+.avatar-container:hover .avatar {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+/* DECORATION */
 .avatar-decoration { 
     position: absolute; 
     width: 130px; 
@@ -126,106 +127,120 @@ body {
     object-fit: contain; 
 }
 
+/* STATUS */
 .status-dot { 
-    width: 22px; 
-    height: 22px; 
+    width: 20px; 
+    height: 20px; 
     border-radius: 50%; 
     position: absolute; 
-    bottom: 22px; 
-    right: 22px; 
-    border: 4px solid #000; 
+    bottom: 20px; 
+    right: 20px; 
+    border: 3px solid #000; 
     z-index: 4; 
 }
 
-/* Small status dot for the top bar */
 .status-dot-small { 
-    width: 14px; 
-    height: 14px; 
+    width: 12px; 
+    height: 12px; 
     border-radius: 50%; 
     position: absolute; 
-    bottom: 3px; 
-    left: 45px; 
+    bottom: 2px; 
+    left: 42px; 
     border: 2px solid #060606; 
 }
 
-/* Top Bar (Discord Tooltip) */
+/* TOOLTIP */
 .discord-card {
     position: absolute; 
     bottom: 110%; 
     left: 50%; 
-    transform: translateX(-50%) translateY(10px) scale(0.8); 
+    transform: translateX(-50%) translateY(10px) scale(0.85); 
     width: 240px; 
-    background: rgba(10, 10, 10, 0.9); 
+    background: rgba(10, 10, 10, 0.95); 
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 10px; 
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px; 
     padding: 12px; 
     opacity: 0; 
     visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+    transition: all 0.3s ease;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
     z-index: 100;
     text-align: left;
 }
 
-/* Trigger Tooltip ONLY on Avatar hover */
 .avatar-container:hover .discord-card { 
     opacity: 1; 
     visibility: visible; 
-    transform: translateX(-50%) translateY(0) scale(0.85); 
+    transform: translateX(-50%) translateY(0) scale(1); 
 }
 
-/* Tooltip Components */
-.card-header { position: relative; margin-bottom: 8px; }
+/* TOOLTIP DETAILS */
+.card-header { margin-bottom: 8px; position: relative; }
 #card-avatar { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #060606; }
 .card-separator { height: 1px; background: #222; margin: 10px 0; }
-.note-label { font-size: 10px; font-weight: 800; color: #888; display: block; margin-bottom: 3px; }
-#discord-note { font-size: 11px; line-height: 1.4; color: #dcddde; font-style: italic; }
+.note-label { font-size: 10px; font-weight: 800; color: #888; }
+#discord-note { font-size: 11px; color: #ccc; font-style: italic; }
 
-/* Presence Colors */
-.online { background: #43b581; box-shadow: 0 0 10px #43b581; }
-.dnd { background: #f04747; box-shadow: 0 0 10px #f04747; }
-.idle { background: #faa61a; box-shadow: 0 0 10px #faa61a; }
+/* STATUS COLORS */
+.online { background: #43b581; box-shadow: 0 0 12px #43b581; }
+.dnd { background: #f04747; box-shadow: 0 0 12px #f04747; }
+.idle { background: #faa61a; box-shadow: 0 0 12px #faa61a; }
 .offline { background: #747f8d; }
 
-/* Now Playing Section */
+/* NOW PLAYING */
 .now-playing { 
-    background: rgba(255,255,255,0.02); 
-    padding: 12px; 
+    background: rgba(255,255,255,0.04); 
+    padding: 10px; 
     border-radius: 40px; 
     font-size: 11px; 
-    margin: 25px 0; 
-    border: 1px solid rgba(255,255,255,0.04); 
+    margin: 20px 0; 
+    border: 1px solid rgba(255,255,255,0.06); 
 }
 
-/* Social Links */
+/* SOCIALS */
 .socials a { 
     color: #fff; 
     font-size: 22px; 
-    opacity: 0.2; 
-    transition: 0.3s ease; 
+    opacity: 0.25; 
+    transition: 0.3s; 
     margin: 0 12px; 
-    text-decoration: none; 
-    display: inline-block;
 }
 
 .socials a:hover { 
     opacity: 1; 
-    transform: translateY(-4px); 
+    transform: translateY(-5px) scale(1.1); 
     text-shadow: 0 0 10px #fff; 
 }
 
-/* Footer Counter */
+/* VIEWS */
 .view-pill { 
     font-size: 10px; 
-    color: #333; 
-    margin-top: 30px; 
+    color: #666; 
+    margin-top: 25px; 
     letter-spacing: 2px; 
-    text-transform: uppercase;
 }
 
-/* Animations */
+/* ANIMATION */
 @keyframes breathe { 
     0%, 100% { opacity: 0.8; transform: scale(1); } 
-    50% { opacity: 0.2; transform: scale(0.98); } 
+    50% { opacity: 0.3; transform: scale(0.95); } 
+}
+
+/* 📱 MOBILE FIX */
+@media (max-width: 500px) {
+    .profile-card {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .avatar-container {
+        width: 110px;
+        height: 110px;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
 }
