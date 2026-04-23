@@ -1,147 +1,128 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-cursor:crosshair;
+const DISCORD_ID = "826362723792977950";
+
+const el = id => document.getElementById(id);
+
+const DOM = {
+avatar: el("discord-avatar"),
+cardAvatar: el("card-avatar"),
+decoration: el("discord-decoration"),
+name: el("display-name"),
+cardName: el("card-name"),
+username: el("card-username"),
+note: el("discord-note"),
+noteSection: el("note-section"),
+status: el("status-dot"),
+views: el("view-count"),
+music: el("bg-music"),
+overlay: el("overlay")
+};
+
+// 🎧 ENTER
+function enterSite(){
+DOM.overlay.classList.add("hidden");
+playMusic();
+connectLanyard();
+particles();
 }
 
-body{
-background:#000;
-color:#fff;
-font-family:monospace;
-overflow:hidden;
+// 🎧 MUSIC
+function playMusic(){
+DOM.music.volume = 0;
+DOM.music.play();
+
+let v=0;
+let i=setInterval(()=>{
+v+=0.02;
+DOM.music.volume=v;
+if(v>=0.2) clearInterval(i);
+},100);
 }
 
-/* BACKGROUND */
-.background-container{
-position:fixed;
-inset:0;
-z-index:1;
+// 🔥 LANYARD FIXED
+function updateUI(d){
+const u = d.discord_user;
+
+const avatar = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${u.avatar}.${u.avatar.startsWith("a_")?"gif":"png"}`;
+DOM.avatar.src = avatar;
+DOM.cardAvatar.src = avatar;
+
+const name = u.global_name || u.username;
+DOM.name.innerText = name;
+DOM.cardName.innerText = name;
+DOM.username.innerText = "@"+u.username;
+
+DOM.status.className = "status-dot "+d.discord_status;
+
+// decoration FIX
+if(u.avatar_decoration_data){
+DOM.decoration.src = `https://cdn.discordapp.com/avatar-decoration-presets/${u.avatar_decoration_data.asset}.png?${Date.now()}`;
+DOM.decoration.style.display="block";
+}else{
+DOM.decoration.style.display="none";
 }
 
-.background-container img{
-width:100%;
-height:100%;
-object-fit:cover;
-filter:brightness(35%) grayscale(100%);
+// custom status
+const custom = d.activities.find(a=>a.type===4);
+if(custom){
+DOM.note.innerText = custom.state;
+DOM.noteSection.style.display="block";
+}else{
+DOM.noteSection.style.display="none";
+}
 }
 
-/* PARTICLES */
-#particles{
-position:fixed;
-inset:0;
-z-index:2;
+// REALTIME
+function connectLanyard(){
+const ws = new WebSocket("wss://api.lanyard.rest/socket");
+
+ws.onopen=()=>{
+ws.send(JSON.stringify({
+op:2,
+d:{subscribe_to_id:DISCORD_ID}
+}));
+};
+
+ws.onmessage=(e)=>{
+const msg = JSON.parse(e.data);
+if(msg.t==="INIT_STATE"||msg.t==="PRESENCE_UPDATE"){
+updateUI(msg.d);
+}
+};
+
+ws.onclose=()=>setTimeout(connectLanyard,5000);
 }
 
-/* OVERLAY */
-#overlay{
-position:fixed;
-inset:0;
-background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:999;
-transition:1s;
+// 👁️ VIEWS
+fetch(`https://api.counterapi.dev/v1/dre_${DISCORD_ID}/visits`)
+.then(r=>r.json())
+.then(d=>DOM.views.innerText=d.value);
+
+// ✨ PARTICLES
+function particles(){
+const c = document.getElementById("particles");
+const ctx = c.getContext("2d");
+
+c.width = innerWidth;
+c.height = innerHeight;
+
+let p = [];
+
+for(let i=0;i<100;i++){
+p.push({x:Math.random()*c.width,y:Math.random()*c.height,v:Math.random()*1});
 }
 
-#overlay.hidden{
-opacity:0;
-pointer-events:none;
+function draw(){
+ctx.clearRect(0,0,c.width,c.height);
+
+p.forEach(pt=>{
+pt.y+=pt.v;
+if(pt.y>c.height) pt.y=0;
+
+ctx.fillStyle="white";
+ctx.fillRect(pt.x,pt.y,2,2);
+});
+
+requestAnimationFrame(draw);
 }
-
-.click-text{
-letter-spacing:10px;
-animation:breathe 2s infinite;
-}
-
-/* CARD */
-.main-content{
-position:relative;
-z-index:10;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.profile-card{
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(20px);
-padding:40px;
-border-radius:20px;
-text-align:center;
-animation:fadeIn 1.5s;
-}
-
-.profile-card:hover{
-transform:scale(1.05);
-}
-
-/* AVATAR */
-.avatar{
-width:90px;
-height:90px;
-border-radius:50%;
-transition:.3s;
-}
-
-.avatar:hover{
-box-shadow:0 0 20px white;
-}
-
-.avatar-decoration{
-position:absolute;
-width:130px;
-}
-
-/* STATUS */
-.status-dot{
-width:15px;
-height:15px;
-border-radius:50%;
-position:absolute;
-bottom:0;
-right:0;
-}
-
-.online{background:#43b581;}
-.dnd{background:red;}
-.idle{background:orange;}
-.offline{background:gray;}
-
-/* TOOLTIP */
-.discord-card{
-position:absolute;
-bottom:110%;
-opacity:0;
-transition:.3s;
-}
-
-.avatar-container:hover .discord-card{
-opacity:1;
-}
-
-/* SOCIALS */
-.socials a{
-color:white;
-margin:10px;
-font-size:20px;
-opacity:.5;
-}
-
-.socials a:hover{
-opacity:1;
-transform:translateY(-3px);
-}
-
-/* ANIMATIONS */
-@keyframes breathe{
-0%,100%{opacity:1;}
-50%{opacity:.3;}
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(20px);}
-to{opacity:1;}
+draw();
 }
