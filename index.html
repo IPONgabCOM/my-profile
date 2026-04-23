@@ -1,75 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>/Dre</title>
-    <!-- Dynamic Favicon Link -->
-    <link rel="icon" id="dynamic-favicon" type="image/png" href="">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>/Dre</title>
+
+<link rel="icon" id="dynamic-favicon">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
-<body oncontextmenu="return false;" onkeydown="return disableInspect(event)">
 
-    <div id="overlay" onclick="enterSite()">
-        <div class="click-text">c l i c k</div>
-    </div>
+<body>
 
-    <div class="background-container">
-        <!-- Replace with your GIF URL -->
-        <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXRnNDBlYzNvZThwajd1ZjE2b3ZicDZseTE3bmNrczQ4b2J3cno3cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k18AJ9319EKBD2o6gx/giphy.gif" id="bg-img">
-    </div>
+<!-- CLICK TO ENTER -->
+<div id="overlay" onclick="enterSite()">
+    <div class="click-text">click</div>
+</div>
 
-    <audio id="bg-music" loop>
-        <source src="Gat Putch - Halik Sobrang Diin PT.2 (feat. Louie Grammz & Mi'Kel).mp3" type="audio/mpeg">
-    </audio>
+<!-- BACKGROUND -->
+<div class="background-container">
+    <img src="https://media.giphy.com/media/k18AJ9319EKBD2o6gx/giphy.gif">
+</div>
 
-    <div class="main-content">
-        <div class="profile-card">
-            
-            <div class="avatar-container">
-                <!-- Discord Hover Card (The Top Bar) -->
-                <div class="discord-card">
-                    <div class="card-header">
-                        <img id="card-avatar" src="" alt="">
-                        <div id="card-status-dot-small" class="status-dot-small"></div>
-                    </div>
-                    <div class="card-body">
-                        <h2 id="card-name">...</h2>
-                        <p id="card-username">@username</p>
-                        <div class="card-separator"></div>
-                        <div class="card-note" id="note-section" style="display: none;">
-                            <span class="note-label">NOTES</span>
-                            <p id="discord-note"></p> 
-                        </div>
-                    </div>
-                </div>
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
 
-                <!-- Main Avatar & Decoration -->
-                <img id="discord-decoration" class="avatar-decoration" src="" style="display: none;">
-                <img id="discord-avatar" class="avatar" src="https://via.placeholder.com/150">
-                <div id="status-dot" class="status-dot offline"></div>
-            </div>
+<!-- MUSIC -->
+<audio id="bg-music" loop>
+    <source src="yourmusic.mp3" type="audio/mpeg">
+</audio>
 
-            <h1 id="display-name">Monsy</h1>
-            
-            <div class="now-playing">
-                <i class="fas fa-music"></i> <span id="song-display">Halik Sobrang Diin PT.2</span>
-            </div>
+<!-- MAIN -->
+<div class="main-content">
+<div class="profile-card">
 
-            <div class="socials">
-                <a href="https://www.instagram.com/d739140803/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@d739140803?_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a href="https://open.spotify.com/user/31teeiisbzosngdzt7evqmmchpdy" target="_blank"><i class="fab fa-spotify"></i></a>
-                <a href="https://discord.com/users/826362723792977950" id="discord-link" target="_blank"><i class="fab fa-discord"></i></a>
-            </div>
+    <div class="avatar-container">
 
-            <div class="view-pill">
-                Views: <span id="view-count">0</span>
+        <!-- TOOLTIP -->
+        <div class="discord-card">
+            <img id="card-avatar">
+            <h2 id="card-name">Loading...</h2>
+            <p id="card-username">@...</p>
+            <div id="note-section" style="display:none;">
+                <p id="discord-note"></p>
             </div>
         </div>
+
+        <img id="discord-decoration" class="avatar-decoration">
+        <img id="discord-avatar" class="avatar">
+        <div id="status-dot" class="status-dot offline"></div>
+
     </div>
 
-    <script src="script.js"></script>
+    <h1 id="display-name">Loading...</h1>
+
+    <div class="now-playing">🎧 <span id="song-display">Loading...</span></div>
+
+    <div class="socials">
+        <a href="#"><i class="fab fa-discord"></i></a>
+    </div>
+
+    <div class="view-pill">Views: <span id="view-count">0</span></div>
+
+</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
