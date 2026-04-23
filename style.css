@@ -1,32 +1,100 @@
-/* All previous reset and background styles remain the same */
-* { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; user-select: none; }
-body { height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; background: #000; color: #fff; }
+/* General Reset & Performance */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    cursor: crosshair; 
+    user-select: none; 
+    -webkit-tap-highlight-color: transparent;
+}
 
-.background-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; will-change: transform; transition: transform 3s cubic-bezier(0.2, 0, 0.2, 1); }
-.background-container img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(15%); }
+body { 
+    height: 100vh; 
+    overflow: hidden; 
+    font-family: 'Courier New', monospace; 
+    background: #000; 
+    color: #fff; 
+}
 
-#overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(30px); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 1.5s ease; }
-#overlay.hidden { opacity: 0; pointer-events: none; }
-.click-text { font-size: 12px; letter-spacing: 10px; animation: breathe 3s infinite; text-transform: uppercase; color: rgba(255, 255, 255, 0.6);}
+/* Background - Slightly Lighter and Smooth */
+.background-container { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: 1; 
+    will-change: transform; 
+    transition: transform 3s cubic-bezier(0.2, 0, 0.2, 1); 
+}
 
-.main-content { display: flex; justify-content: center; align-items: center; height: 100vh; position: relative; z-index: 10;}
+.background-container img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    /* Brightness increased to 28% for better visibility */
+    filter: grayscale(100%) brightness(28%); 
+}
 
-/* Main Card Styling */
+/* Click Overlay */
+#overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.98); 
+    backdrop-filter: blur(30px); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 9999; 
+    transition: opacity 1.5s ease, visibility 1.5s; 
+}
+
+#overlay.hidden { 
+    opacity: 0; 
+    visibility: hidden; 
+    pointer-events: none; 
+}
+
+.click-text { 
+    font-size: 12px; 
+    letter-spacing: 10px; 
+    animation: breathe 3s infinite; 
+    text-transform: uppercase; 
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Main Content Layout */
+.main-content { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    position: relative;
+    z-index: 10;
+}
+
+/* Main Profile Card */
 .profile-card { 
     background: rgba(255, 255, 255, 0.01); 
     backdrop-filter: blur(20px); 
     border: 1px solid rgba(255, 255, 255, 0.03); 
     padding: 50px; 
-    border-radius: 20px; 
+    border-radius: 25px; 
     width: 380px; 
     text-align: center; 
     box-shadow: 0 0 40px rgba(0,0,0,0.4);
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
 }
-.profile-card:hover { transform: scale(1.02); }
 
-/* Avatar Container - NOW the trigger for the hover card */
+.profile-card:hover { 
+    transform: scale(1.02); 
+}
+
+/* Avatar Container - The Hover Trigger */
 .avatar-container { 
     position: relative; 
     width: 130px; 
@@ -35,70 +103,129 @@ body { height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; b
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Important: Keeps the hover area strictly to the circle */
-    border-radius: 50%;
 }
 
-.avatar { width: 90px; height: 90px; border-radius: 50%; z-index: 2; position: relative; object-fit: cover;}
+.avatar { 
+    width: 90px; 
+    height: 90px; 
+    border-radius: 50%; 
+    z-index: 2; 
+    position: relative;
+    object-fit: cover;
+}
 
-/* FIXED: Correct Avatar Decoration Positioning */
 .avatar-decoration { 
     position: absolute; 
-    width: 130px; /* Container size */
+    width: 130px; 
     height: 130px; 
     z-index: 3; 
     pointer-events: none; 
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
     object-fit: contain; 
 }
 
-/* Status dots */
-.status-dot { width: 22px; height: 22px; border-radius: 50%; position: absolute; bottom: 22px; right: 22px; border: 4px solid #000; z-index: 4; }
-.status-dot-small { width: 14px; height: 14px; border-radius: 50%; position: absolute; bottom: 3px; left: 45px; border: 2px solid #060606; z-index: 4; }
+.status-dot { 
+    width: 22px; 
+    height: 22px; 
+    border-radius: 50%; 
+    position: absolute; 
+    bottom: 22px; 
+    right: 22px; 
+    border: 4px solid #000; 
+    z-index: 4; 
+}
 
-/* FIXED: Smaller, Lower Tooltip, triggered ONLY by avatar-container hover */
+/* Small status dot for the top bar */
+.status-dot-small { 
+    width: 14px; 
+    height: 14px; 
+    border-radius: 50%; 
+    position: absolute; 
+    bottom: 3px; 
+    left: 45px; 
+    border: 2px solid #060606; 
+}
+
+/* Top Bar (Discord Tooltip) */
 .discord-card {
     position: absolute; 
-    bottom: 110%; /* Lowered position */
+    bottom: 110%; 
     left: 50%; 
-    transform: translateX(-50%) translateY(10px) scale(0.8); /* Smaller scale */
+    transform: translateX(-50%) translateY(10px) scale(0.8); 
     width: 240px; 
     background: rgba(10, 10, 10, 0.9); 
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px; 
-    padding: 10px; 
+    border-radius: 10px; 
+    padding: 12px; 
     opacity: 0; 
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
     z-index: 100;
-    text-align: left; /* Keep contents left-aligned like Discord */
+    text-align: left;
 }
-/* Trigger Tooltip on AVATAR hover */
+
+/* Trigger Tooltip ONLY on Avatar hover */
 .avatar-container:hover .discord-card { 
     opacity: 1; 
     visibility: visible; 
     transform: translateX(-50%) translateY(0) scale(0.85); 
 }
 
-/* Components of Tooltip */
+/* Tooltip Components */
 .card-header { position: relative; margin-bottom: 8px; }
 #card-avatar { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #060606; }
 .card-separator { height: 1px; background: #222; margin: 10px 0; }
 .note-label { font-size: 10px; font-weight: 800; color: #888; display: block; margin-bottom: 3px; }
 #discord-note { font-size: 11px; line-height: 1.4; color: #dcddde; font-style: italic; }
-#card-username { font-size: 11px; color: #666; }
 
-/* Components of Main Card */
+/* Presence Colors */
 .online { background: #43b581; box-shadow: 0 0 10px #43b581; }
 .dnd { background: #f04747; box-shadow: 0 0 10px #f04747; }
 .idle { background: #faa61a; box-shadow: 0 0 10px #faa61a; }
 .offline { background: #747f8d; }
 
-.socials { margin-top: 20px; }
-.socials a { color: #fff; font-size: 20px; opacity: 0.2; transition: 0.3s ease; margin: 0 10px; text-decoration: none; }
-.socials a:hover { opacity: 1; transform: translateY(-3px); text-shadow: 0 0 8px #fff; }
+/* Now Playing Section */
+.now-playing { 
+    background: rgba(255,255,255,0.02); 
+    padding: 12px; 
+    border-radius: 40px; 
+    font-size: 11px; 
+    margin: 25px 0; 
+    border: 1px solid rgba(255,255,255,0.04); 
+}
 
-@keyframes breathe { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 0.2; transform: scale(0.98); } }
+/* Social Links */
+.socials a { 
+    color: #fff; 
+    font-size: 22px; 
+    opacity: 0.2; 
+    transition: 0.3s ease; 
+    margin: 0 12px; 
+    text-decoration: none; 
+    display: inline-block;
+}
+
+.socials a:hover { 
+    opacity: 1; 
+    transform: translateY(-4px); 
+    text-shadow: 0 0 10px #fff; 
+}
+
+/* Footer Counter */
+.view-pill { 
+    font-size: 10px; 
+    color: #333; 
+    margin-top: 30px; 
+    letter-spacing: 2px; 
+    text-transform: uppercase;
+}
+
+/* Animations */
+@keyframes breathe { 
+    0%, 100% { opacity: 0.8; transform: scale(1); } 
+    50% { opacity: 0.2; transform: scale(0.98); } 
+}
