@@ -9,11 +9,12 @@
 </head>
 <body oncontextmenu="return false;" onkeydown="return disableInspect(event)">
 
-    <!-- The overlay must have the highest z-index to be clickable -->
+    <!-- Overlay: Highest Z-Index -->
     <div id="overlay" onclick="enterSite()">
         <div class="click-text">c l i c k</div>
     </div>
 
+    <!-- Background: Lowest Z-Index -->
     <div class="background-container">
         <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXRnNDBlYzNvZThwajd1ZjE2b3ZicDZseTE3bmNrczQ4b2J3cno3cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k18AJ9319EKBD2o6gx/giphy.gif" id="bg-img">
     </div>
@@ -25,9 +26,10 @@
     <div class="main-content">
         <div class="profile-wrapper">
             
+            <!-- Top Bar / Tooltip -->
             <div class="discord-card" id="hover-card">
                 <div class="card-header">
-                    <img id="card-avatar" src="" alt="Avatar">
+                    <img id="card-avatar" src="" alt="">
                     <div id="card-status-dot" class="status-dot-small"></div>
                 </div>
                 <div class="card-body">
@@ -41,6 +43,7 @@
                 </div>
             </div>
 
+            <!-- Main Card -->
             <div class="profile-card">
                 <div class="avatar-container">
                     <img id="discord-decoration" class="avatar-decoration" src="" style="display: none;">
