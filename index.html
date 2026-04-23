@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>/Dre</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<!-- The oncontextmenu and onkeydown attributes prevent right-click and Inspect shortcuts -->
+<body oncontextmenu="return false;" onkeydown="return disableInspect(event)">
 
-    <!-- Click to Enter Overlay -->
     <div id="overlay" onclick="enterSite()">
         <div class="click-text">c l i c k</div>
     </div>
 
-    <!-- Animated Background -->
     <div class="background-container">
-        <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXRnNDBlYzNvZThwajd1ZjE2b3ZicDZseTE3bmNrczQ4b2J3cno3cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k18AJ9319EKBD2o6gx/giphy.gif" id="bg-img">
+        <img src="https://media.giphy.com/media/k18AJ9319EKBD2o6gx/giphy.gif" id="bg-img">
     </div>
 
-    <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="Gat Putch - Halik Sobrang Diin PT.2 (feat. Louie Grammz & Mi'Kel).mp3" type="audio/mpeg">
     </audio>
@@ -27,17 +25,15 @@
     <div class="main-content">
         <div class="profile-wrapper">
             
-            <!-- Discord Tooltip (Hover Card) -->
             <div class="discord-card" id="hover-card">
                 <div class="card-header">
-                    <img id="card-avatar" src="" alt="Avatar">
+                    <img id="card-avatar" src="" alt="">
                     <div id="card-status-dot" class="status-dot-small"></div>
                 </div>
                 <div class="card-body">
                     <h2 id="card-name">Loading...</h2>
                     <p id="card-username">@username</p>
                     <div class="card-separator"></div>
-                    <!-- Note section: Auto-toggled by script.js -->
                     <div class="card-note" id="note-section" style="display: none;">
                         <span class="note-label">NOTES</span>
                         <p id="discord-note"></p> 
@@ -45,9 +41,9 @@
                 </div>
             </div>
 
-            <!-- Main Profile Card -->
             <div class="profile-card">
                 <div class="avatar-container">
+                    <!-- The decoration is placed specifically to align with the avatar -->
                     <img id="discord-decoration" class="avatar-decoration" src="" style="display: none;">
                     <img id="discord-avatar" class="avatar" src="https://via.placeholder.com/150">
                     <div id="status-dot" class="status-dot offline"></div>
@@ -56,11 +52,9 @@
                 <h1 id="display-name">Monsy</h1>
                 
                 <div class="now-playing">
-                    <i class="fas fa-music"></i> 
-                    <span id="song-display">Now Playing: Halik Sobrang Diin PT.2</span>
+                    <i class="fas fa-music"></i> <span id="song-display">Now Playing: Halik Sobrang Diin PT.2</span>
                 </div>
 
-                <!-- Social Links -->
                 <div class="socials">
                     <a href="https://www.instagram.com/d739140803/" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.tiktok.com/@d739140803?_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
@@ -68,7 +62,6 @@
                     <a href="https://discord.com/users/826362723792977950" id="discord-link" target="_blank"><i class="fab fa-discord"></i></a>
                 </div>
 
-                <!-- View Counter -->
                 <div class="view-pill">
                     Views: <span id="view-count">0</span>
                 </div>
