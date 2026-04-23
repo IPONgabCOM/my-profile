@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>/Dre</title>
+<title>Dre</title>
 
 <link rel="icon" id="dynamic-favicon">
 <link rel="stylesheet" href="style.css">
@@ -13,35 +13,29 @@
 
 <body>
 
-<!-- CLICK TO ENTER -->
 <div id="overlay" onclick="enterSite()">
     <div class="click-text">click</div>
 </div>
 
-<!-- BACKGROUND -->
 <div class="background-container">
     <img src="https://media.giphy.com/media/k18AJ9319EKBD2o6gx/giphy.gif">
 </div>
 
-<!-- PARTICLES -->
 <canvas id="particles"></canvas>
 
-<!-- MUSIC -->
 <audio id="bg-music" loop>
     <source src="yourmusic.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MAIN -->
 <div class="main-content">
 <div class="profile-card">
 
     <div class="avatar-container">
 
-        <!-- TOOLTIP -->
         <div class="discord-card">
             <img id="card-avatar">
-            <h2 id="card-name">Loading...</h2>
-            <p id="card-username">@...</p>
+            <h2 id="card-name">dwep</h2>
+            <p id="card-username">@dwep</p>
             <div id="note-section" style="display:none;">
                 <p id="discord-note"></p>
             </div>
@@ -53,9 +47,19 @@
 
     </div>
 
-    <h1 id="display-name">Loading...</h1>
+    <h1 id="display-name">dwep</h1>
 
-    <div class="now-playing">🎧 <span id="song-display">Loading...</span></div>
+    <!-- 🎧 SPOTIFY LIVE -->
+    <div class="spotify-bar" id="spotify-bar" style="display:none;">
+        <img id="spotify-cover">
+        <div class="spotify-info">
+            <div id="spotify-song">No song</div>
+            <div id="spotify-artist"></div>
+            <div class="progress">
+                <div id="spotify-progress"></div>
+            </div>
+        </div>
+    </div>
 
     <div class="socials">
         <a href="#"><i class="fab fa-discord"></i></a>
@@ -65,6 +69,8 @@
 
 </div>
 </div>
+
+<div class="made-by">Made By: Dre</div>
 
 <script src="script.js"></script>
 </body>
