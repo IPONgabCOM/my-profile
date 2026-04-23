@@ -3,42 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO + Embed -->
     <title>/Dre</title>
-    <!-- Dynamic Favicon Link -->
-    <link rel="icon" id="dynamic-favicon" type="image/png" href="">
+    <meta name="description" content="Monsy profile page">
+    <meta property="og:title" content="Monsy">
+    <meta property="og:description" content="Click to enter">
+    <meta property="og:image" content="https://via.placeholder.com/300">
+
+    <!-- Dynamic Favicon -->
+    <link rel="icon" id="dynamic-favicon" type="image/png">
+
+    <!-- Fonts + Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Preload for performance -->
+    <link rel="preload" as="image" href="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXRnNDBlYzNvZThwajd1ZjE2b3ZicDZseTE3bmNrczQ4b2J3cno3cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k18AJ9319EKBD2o6gx/giphy.gif">
 </head>
+
 <body oncontextmenu="return false;" onkeydown="return disableInspect(event)">
 
-    <div id="overlay" onclick="enterSite()">
-        <div class="click-text">c l i c k</div>
+    <!-- CLICK OVERLAY -->
+    <div id="overlay">
+        <div class="click-text">click</div>
     </div>
 
+    <!-- BACKGROUND -->
     <div class="background-container">
         <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXRnNDBlYzNvZThwajd1ZjE2b3ZicDZseTE3bmNrczQ4b2J3cno3cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k18AJ9319EKBD2o6gx/giphy.gif" id="bg-img">
     </div>
 
-    <audio id="bg-music" loop>
+    <!-- MUSIC -->
+    <audio id="bg-music" loop preload="auto">
         <source src="Gat Putch - Halik Sobrang Diin PT.2 (feat. Louie Grammz & Mi'Kel).mp3" type="audio/mpeg">
     </audio>
 
-    <div class="main-content">
+    <!-- MAIN -->
+    <div class="main-content fade-in">
         <div class="profile-card">
-            
-            <!-- FIXED: Tooltip wrapper moved inside avatar-container -->
+
             <div class="avatar-container">
-                
-                <!-- Tooltip (discord-card) is now tied to the avatar -->
+
+                <!-- DISCORD HOVER CARD -->
                 <div class="discord-card" id="hover-card">
                     <div class="card-header">
-                        <img id="card-avatar" src="" alt="">
+                        <img id="card-avatar" src="">
                         <div id="card-status-dot-small" class="status-dot-small"></div>
                     </div>
+
                     <div class="card-body">
                         <h2 id="card-name">Loading...</h2>
                         <p id="card-username">@username</p>
+
                         <div class="card-separator"></div>
+
                         <div class="card-note" id="note-section" style="display: none;">
                             <span class="note-label">NOTES</span>
                             <p id="discord-note"></p> 
@@ -46,30 +67,57 @@
                     </div>
                 </div>
 
-                <img id="discord-decoration" class="avatar-decoration" src="" style="display: none;">
+                <!-- AVATAR -->
+                <img id="discord-decoration" class="avatar-decoration" style="display:none;">
                 <img id="discord-avatar" class="avatar" src="https://via.placeholder.com/150">
                 <div id="status-dot" class="status-dot offline"></div>
+
             </div>
 
             <h1 id="display-name">Monsy</h1>
-            
+
+            <!-- MUSIC DISPLAY -->
             <div class="now-playing">
-                <i class="fas fa-music"></i> <span id="song-display">Now Playing: Halik Sobrang Diin PT.2</span>
+                <i class="fas fa-music"></i>
+                <span id="song-display">Now Playing: Halik Sobrang Diin PT.2</span>
             </div>
 
+            <!-- SOCIALS -->
             <div class="socials">
                 <a href="https://www.instagram.com/d739140803/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@d739140803?_r=1" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.tiktok.com/@d739140803" target="_blank"><i class="fab fa-tiktok"></i></a>
                 <a href="https://open.spotify.com/user/31teeiisbzosngdzt7evqmmchpdy" target="_blank"><i class="fab fa-spotify"></i></a>
-                <a href="https://discord.com/users/826362723792977950" id="discord-link" target="_blank"><i class="fab fa-discord"></i></a>
+                <a href="https://discord.com/users/826362723792977950" target="_blank"><i class="fab fa-discord"></i></a>
             </div>
 
+            <!-- VIEWS -->
             <div class="view-pill">
                 Views: <span id="view-count">0</span>
             </div>
+
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- SCRIPT -->
+    <script>
+        const overlay = document.getElementById("overlay");
+        const music = document.getElementById("bg-music");
+
+        overlay.addEventListener("click", () => {
+            overlay.style.opacity = "0";
+            overlay.style.pointerEvents = "none";
+
+            music.play().catch(() => {});
+
+            document.querySelector(".main-content").classList.add("active");
+        });
+
+        // basic anti inspect (optional improve later)
+        function disableInspect(e) {
+            if (e.key === "F12") return false;
+            if (e.ctrlKey && e.shiftKey && e.key === "I") return false;
+        }
+    </script>
+
 </body>
 </html>
