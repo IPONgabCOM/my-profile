@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<!-- The oncontextmenu and onkeydown attributes prevent right-click and Inspect shortcuts -->
 <body oncontextmenu="return false;" onkeydown="return disableInspect(event)">
 
+    <!-- The overlay must have the highest z-index to be clickable -->
     <div id="overlay" onclick="enterSite()">
         <div class="click-text">c l i c k</div>
     </div>
@@ -27,7 +27,7 @@
             
             <div class="discord-card" id="hover-card">
                 <div class="card-header">
-                    <img id="card-avatar" src="" alt="">
+                    <img id="card-avatar" src="" alt="Avatar">
                     <div id="card-status-dot" class="status-dot-small"></div>
                 </div>
                 <div class="card-body">
@@ -43,7 +43,6 @@
 
             <div class="profile-card">
                 <div class="avatar-container">
-                    <!-- The decoration is placed specifically to align with the avatar -->
                     <img id="discord-decoration" class="avatar-decoration" src="" style="display: none;">
                     <img id="discord-avatar" class="avatar" src="https://via.placeholder.com/150">
                     <div id="status-dot" class="status-dot offline"></div>
