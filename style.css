@@ -1,14 +1,8 @@
+/* Previous global styles remain the same */
 * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; user-select: none; }
+body { height: 100vh; overflow: hidden; font-family: 'Courier New', monospace; background: #000; color: #fff; }
 
-body { 
-    height: 100vh; 
-    overflow: hidden; 
-    font-family: 'Courier New', monospace; 
-    background: #000; 
-    color: #fff; 
-}
-
-/* Background must stay behind everything */
+/* Smoother background with no lag */
 .background-container { 
     position: fixed; 
     top: 0; 
@@ -16,109 +10,83 @@ body {
     width: 100%; 
     height: 100%; 
     z-index: 1; 
-    transition: transform 3s cubic-bezier(0.1, 0, 0.3, 1); 
-}
-.background-container img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    filter: grayscale(100%) brightness(20%); 
+    will-change: transform; /* Prevents lag during zoom */
+    transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1); 
 }
 
-/* Overlay MUST have higher z-index than .main-content */
-#overlay { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: rgba(0, 0, 0, 0.98); 
-    backdrop-filter: blur(30px); 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    z-index: 9999; 
-    transition: opacity 1.5s ease; 
-}
-#overlay.hidden { opacity: 0; pointer-events: none; }
-
-.click-text { 
-    font-size: 14px; 
-    letter-spacing: 12px; 
-    animation: breathe 3s infinite; 
-    text-transform: uppercase; 
-    color: #fff;
+/* ADJUSTED: Smaller and Lower Top Bar (Discord Card) */
+.discord-card {
+    position: absolute; 
+    bottom: 102%; /* Brought closer to the main card */
+    left: 50%; 
+    transform: translateX(-50%) translateY(10px) scale(0.85); /* Slightly smaller scale */
+    width: 250px; /* Reduced width */
+    background: rgba(7, 7, 7, 0.95); 
+    backdrop-filter: blur(10px);
+    border-radius: 10px; 
+    padding: 12px; 
+    opacity: 0; 
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother transition */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+    z-index: 100;
 }
 
-.main-content { 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-    position: relative;
-    z-index: 10;
+.profile-wrapper:hover .discord-card { 
+    opacity: 1; 
+    visibility: visible; 
+    transform: translateX(-50%) translateY(0) scale(0.9); 
 }
 
-.profile-wrapper { 
-    position: relative; 
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
-}
-.profile-wrapper:hover { transform: scale(1.03); }
-
-.profile-card { 
-    background: rgba(255, 255, 255, 0.01); 
-    backdrop-filter: blur(10px); 
-    border: 1px solid rgba(255, 255, 255, 0.05); 
-    padding: 50px; 
-    border-radius: 25px; 
-    width: 380px; 
-    text-align: center; 
-}
-
-/* Avatar & Decoration Alignment */
+/* FIXED: Avatar Decoration Alignment */
 .avatar-container { 
     position: relative; 
-    width: 140px; 
-    height: 140px; 
+    width: 120px; /* Slightly smaller container */
+    height: 120px; 
     margin: 0 auto 15px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .avatar { 
-    width: 100px; 
-    height: 100px; 
+    width: 80px; 
+    height: 80px; 
     border-radius: 50%; 
-    position: absolute;
-    top: 20px;
-    left: 20px;
     z-index: 2; 
+    position: relative;
 }
+
 .avatar-decoration { 
     position: absolute; 
-    width: 140px; 
-    height: 140px; 
+    width: 110px; /* Matches Discord's ratio better */
+    height: 110px; 
     z-index: 3; 
     pointer-events: none; 
-    top: 0; 
-    left: 0; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Keeps it perfectly centered */
     object-fit: contain; 
 }
 
 .status-dot { 
-    width: 24px; 
-    height: 24px; 
+    width: 20px; 
+    height: 20px; 
     border-radius: 50%; 
     position: absolute; 
-    bottom: 25px; 
-    right: 25px; 
-    border: 4px solid #000; 
+    bottom: 18px; 
+    right: 18px; 
+    border: 3px solid #000; 
     z-index: 4; 
 }
 
-.online { background: #43b581; box-shadow: 0 0 15px #43b581; }
-.dnd { background: #f04747; box-shadow: 0 0 15px #f04747; }
-.idle { background: #faa61a; box-shadow: 0 0 15px #faa61a; }
-.offline { background: #747f8d; }
-
-.socials a { color: #fff; font-size: 24px; opacity: 0.3; transition: 0.4s; margin: 0 12px; text-decoration: none; }
-.socials a:hover { opacity: 1; transform: translateY(-5px); text-shadow: 0 0 10px #fff; }
-
-@keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+/* Profile Card Polish */
+.profile-card { 
+    background: rgba(255, 255, 255, 0.02); 
+    backdrop-filter: blur(15px); 
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    padding: 40px; 
+    border-radius: 20px; 
+    width: 350px; 
+    text-align: center; 
+}
